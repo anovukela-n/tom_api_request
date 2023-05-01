@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 
 function DrinkChoiceForm() {
-  const [metadata, setMetadata] = useState(null);
+  const [getData, setGetData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const response = await fetch("https://api.up2tom.com/v3/models", {
+      const response = await fetch("https://api.up2tom.com/v3/models/58d3bcf97c6b1644db73ad12", {
       method: "GET",
       headers: {
         
@@ -15,34 +15,37 @@ function DrinkChoiceForm() {
 
       const data = await response.json();
     //  console.log(data);
-      setMetadata(data);
+      setGetData(data);
     };
 
     fetchData();
   }, []);
 
-  if (!metadata) {
+  if (!getData) {
     return <div>Loading...</div>;
   }
-  //else {
-   /*  return(
-    <div>Got data</div>); } */
-
-
- // const { modelName, inputVariables } = metadata;
- // console.log(modelName);
-  console.log(metadata.data);
-
-
+  
+  else {
+  console.log(getData.data);
 
    return (
     <div>
-      <h2>Drinks choice</h2>
+      <h2>{getData.data.attributes.name} </h2>
       <form>
-        {metadata.data.map((variable) => (
-          <div key={variable.name}>
-            <label htmlFor={variable.attributes.name}>{variable.label}</label>
-            <input type={variable.type} id={variable.name} name={variable.name} />
+        {getData.data.attributes.metadata.attributes.map((item,i) => (
+          <div key={i}>
+           
+                  <label>name  : </label>
+                  <input type="text" value={item.name}  />
+                  <br></br>
+                  <label>question  : </label>
+                  <input type="text" value={item.question}  />
+                  <br></br>
+                  <label>type  : </label>
+                  <input type="text" value={item.type}  />
+                  <br></br>
+                  <br></br>
+          
           </div>
         ))}
         <button type="submit">Submit</button>
@@ -50,5 +53,5 @@ function DrinkChoiceForm() {
     </div>
   ); 
 }
-
+}
 export default DrinkChoiceForm;
