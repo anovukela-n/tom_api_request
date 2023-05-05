@@ -24,7 +24,7 @@ function DrinkChoiceForm() {
   if (!getData) {
     return <div>Loading...</div>;
   }
-  
+
   else {
   console.log(getData.data);
 
@@ -53,5 +53,63 @@ function DrinkChoiceForm() {
     </div>
   ); 
 }
+
 }
+
+function QueryFunction()
+{
+  const [decision, setDecision] = useState(null);
+  var raw = JSON.stringify({
+    "data": {
+      "type": "scenario",
+      "attributes": {
+        "input": {
+          "INPUTVAR1": 1,
+          "INPUTVAR2": "Female",
+          "INPUTVAR3": 1,
+          "INPUTVAR4": "Yes",
+          "INPUTVAR5": "Morning",
+          "INPUTVAR6": "Yes",
+          "INPUTVAR7": "Yes",
+          "INPUTVAR8": 1,
+          "INPUTVAR9": 1
+        }
+      }
+    }
+  });
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("https://api.up2tom.com/v3/decision/58d3bcf97c6b1644db73ad12", {
+      method: "POST",
+      headers: {
+        "Authorization":"Token  9307bfd5fa011428ff198bb37547f979",
+        "Content-Type": "application/json",
+      },
+      redirect: "follow",
+      body: raw,
+
+    });
+
+    const data = await response.json();
+    console.log(data);
+
+    setDecision(data);
+  };
+
+
+  fetchData();
+  }, []);
+
+  if (!decision) {
+    return <div>Loading...</div>;
+  }
+  else{
+    return <div>return data soon</div>
+  }
+
+
+}
+
 export default DrinkChoiceForm;
+ 
